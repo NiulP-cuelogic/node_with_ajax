@@ -79,20 +79,22 @@
         function login(event){
             event.preventDefault();
             console.log('called');
-            var user_email = $("#login_email").val();
-            var user_password = $('#login_password').val();
+            var user_email_login = $("#login_email").val();
+            var user_password_login = $('#login_password').val();
+            // console.log(user_email);
             $.ajax({
                 url:"http://localhost:3001/signup/signin",
                 method:"POST",
                 
                 data:{
-                    email:user_email,
-                    password:user_password
+                    email:user_email_login,
+                    password:user_password_login
                 },
                 success:function(response){
                     // console.log(response);
                     if(response.admin){
-                        window.location = "admin_index.html";
+                        console.log("admin...");
+                        window.location = "../admin/admin_index.html";
                     }
                     if(response.user){
                         window.location = "profile.html";

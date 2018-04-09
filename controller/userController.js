@@ -61,15 +61,17 @@ class userController{
         console.log('called...');
         User.findOne({email:req.body.email, password:req.body.password})
         .exec()
-        .then(user=>{
-            if(req.body.login_email === "admin@gmail.com" && req.body.login_password === "admin"){
-                res.json({admin:user});
+        .then(user1=>{
+            if(req.body.email === "admin@gmail.com" && req.body.password === "admin"){
+                console.log('called admin...');
+                res.json({admin:user1});
             }
+
             else if(user.length<1){
                 res.json({error:"not found.."});
             }
             else{
-                res.json({user:user});
+                res.json({user:user1});
             }
         })
         .catch(err=>{
