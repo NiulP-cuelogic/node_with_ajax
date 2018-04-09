@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login and registration</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="../scripts/validation.js"></script> -->
+    <!-- <script src="jquery.js"></script> -->
+</head>
+<body>
+    
+    <div class="login-page">
+        <div class="form">
+            <form class="register-form" method="post">
+                <input type="email" placeholder="email" name="email"  id="user_email">
+                <input type="text" placeholder="first name" name="firstname"  id="user_firstname">
+                <input type="text" placeholder="last name" name="lastname"  id="user_lastname">
+                <input type="password" placeholder="password" name="password"  id="user_password">
+                <!-- <input type="submit" value="Create"> -->
+              
+                <input type="submit" value="Create" id="signup_btn" onclick="register(event)">
+                <p class="message">Already a user?<a href="#">Login</a> </p>
+                <p id="error_message_signup"></p>
+            </form>
+            <form  class="login-form" method="post">
+                <input type="email" placeholder="email" name="email" id="login_email">
+                <input type="password" placeholder="password" name="password" id="login_password">
+                <!-- <input type="submit" value="Login"> -->
+                <!-- <button type="submit">Login</button> -->
+                <input type="submit" value="Login" id="login_btn" onclick="login(event)">
+                <p class="message">Not a user?<a href="#">Sign-up</a></p>
+                <p class="error_message_login"></p>
+                
+            </form>
+        </div>
+    </div>
+    <!-- <script src="jquery.js"></script> -->
+    <script>
+        $('.message a').click(function(){
+            $('form').animate({height:"toggle",opacity:"toggle"},"slow");
+        });
+        
+        function register(event){
+            event.preventDefault();
+            var user_email = $("#user_email").val();
+            var user_firstname = $("#user_firstname").val();
+            var user_lastname = $("#user_lastname").val();
+            var user_password = $("#user_password").val();
+
+            $.ajax({
+                url:"http://localhost:3001/signup",
+                method:"post",
+                data:{
+                    email:user_email,
+                    firstname:user_firstname,
+                    lastname:user_lastname,
+                    password:user_password
+                },
+                success:function(response){
+                    
+                    $("#error_message_signup").text(response.message);
+                    // console.log(response.message);
+                    // if(response.admin){
+                    //     // localStorage.setItem('useremail',user_email);
+                    //     // console.log(localStorage.getItem('useremail'));
+                    //     // window.location = "admin_index.html";
+                    // }
+                    if(response.user){
+                        localStorage.setItem('useremail',user_email);
+                        window.location = "profile.html";
+                    }
+                }
+            })
+        }
+        function login(event){
+            event.preventDefault();
+            console.log('called');
+            var user_email = $("#login_email").val();
+            var user_password = $('#login_password').val();
+            $.ajax({
+                url:"http://localhost:3001/signup/signin",
+                method:"POST",
+                
+                data:{
+                    email:user_email,
+                    password:user_password
+                },
+                success:function(response){
+                    // console.log(response);
+                    if(response.admin){
+                        window.location = "admin_index.html";
+                    }
+                    if(response.user){
+                        window.location = "profile.html";
+                    }
+                    if(response.error){
+                        $('.error_message_login').text("username or password is invalid .");
+                    }   
+                }
+            })
+        }
+        
+    </script>
+    
+   
+</body>
+</html>

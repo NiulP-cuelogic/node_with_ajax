@@ -1,0 +1,49 @@
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../css/images/mikayla-mallek-219946-unsplash.jpg);
+    background-size: cover;
+}
+
+.container {
+    margin-top: 110px;
+}
+
+.users {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.users td,
+.users th {
+    /* width: 100%; */
+    border: 1p solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.users tr {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.users tr:hover {
+    background-color: #ddd;
+}
+
+.users th {
+    padding-top: 12px;
+    /* padding-bottom: 12px; */
+    /* text-align: left; */
+    background-color: #4CAF50;
+    color: white;
+}
+
+.users button{
+    background-color: #4CAF50;
+    width: 120px;
+    height:25px;
+    border: none;
+    border-radius: 20px;
+}
+.users button:hover{
+    background-color: green;
+}

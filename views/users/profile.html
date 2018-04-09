@@ -1,0 +1,79 @@
+<!DOCTYPE html> 
+<html lang"en">
+<head>
+    <meta charset"UTF-8">
+    <meta name"viewport" content"widthdevice-width, initial-scale1.0">
+    <meta http-equiv"X-UA-Compatible" content"ieedge">
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Document</title>
+    
+</head>
+<body>
+       
+
+        <div class ="container">
+                <table class="users">
+                    <tr>
+                        <!-- <th>User ID</th> -->
+                        <th>User email</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Actions</th>
+                        
+                    </tr>
+                    <tbody>
+                        
+                            <tr class="userDetails">
+                                <td id="user_email"></td>
+                                <td id="user_firstname"></td>
+                                <td id="user_lastname"></td>
+                                <td>
+                                    <span>
+                                            <button id="edit_button">Edit</button>
+                                            <button id="save_button">Save</button>
+                                            <button id="cancel_button">Cancel</button>
+                                    </span>
+                                    <input type="hidden" id="userId" >
+                                </td>
+                                
+                            </tr>
+                            
+                    </tbody>    
+                </table>
+              
+            </div>
+            <script src="../scripts/profile.js"></script>
+            <script>    
+                    $(document).ready(function(){
+                        $("#cancel_button").hide();
+                        $('#save_button').hide();
+                        var username = localStorage.getItem('useremail');
+                        console.log(username);
+                        $.ajax({
+                            method:"POST",
+                            url:"http://localhost:3001/signup/userDetails",
+                            data:{
+                                email:username
+                            },
+                            success:function(response){
+                                $('#userId').val(response.data._id);
+                                $('#user_email').text(response.data.email);
+                                $('#user_firstname').text(response.data.firstname);
+                                $('#user_lastname').text(response.data.lastname);
+                            }
+                        })
+                    })
+                    $("#edit_button").on('click',function(){                  
+                        showSaveAndCancel();
+                    })
+                    
+                    $("#save_button").on('click',function(){
+                        saveDetails();
+                    })
+                    
+                
+                </script>
+   
+</body>
+</html>
