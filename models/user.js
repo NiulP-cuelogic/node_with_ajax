@@ -12,4 +12,4 @@ var userSchema = new Schema({
     isAdmin:{type:Boolean , default:false}
 })
 
-export default mongoose.model("User",userSchema);
+export default mongoose.model("User",userSchema);   

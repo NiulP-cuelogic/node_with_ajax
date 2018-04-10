@@ -33,4 +33,8 @@ router.post("/userDetails",user.userDetails);
 router.post("/userDetails/edit",user.edit);
 router.post('/userDetails/update',user.update);
 router.post('/signin',user.login);
+router.get('/signin/admin',user.admin);
+router.post('/signin/admin/save/:id',user.admin_save);
+router.post('/signin/admin/delete/:id',user.admin_delete);
+router.post('/signin/admin/search',user.admin_search);
 export default router;

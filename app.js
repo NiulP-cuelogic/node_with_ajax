@@ -12,9 +12,9 @@ app.use(function(req, res, next) {
     next();
 });
 
-var db = "mongodb://localhost/demo";
+var db = "mongodb://localhost/demo1";
 mongoose.connect(db);
-
+mongoose.Promise = global.Promise;
 console.log("app is running ");
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

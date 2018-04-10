@@ -19,25 +19,17 @@ class userController{
 
     else{
         user.save().then(user1 => {
-            if(req.body.email ==="admin@gmail.com" && req.body.password === "admin"){
-                res.json({admin:user1});
-            }
-            else{
+            
                 res.json({user:user1});
-            }
-            // res.json({
-            //     success: user1
-            // })
-            // localStorage.setItem('email',req.body.email);
-            // console.log(user);
+           
         });
     }
     }
 
     userDetails(req,res){
-        var username = req.body.email;
-        User.findOne({email:username}).exec().then(user=>{res.json({data:user})}).catch();
-        console.log("username ==>",username);
+        // var username = req.body.email;
+        User.findOne({email:req.body.email}).exec().then(user=>{res.json({data:user})}).catch();
+        // console.log("username ==>",username);
     }
 
     edit(req,res){
@@ -67,7 +59,7 @@ class userController{
                 res.json({admin:user1});
             }
 
-            else if(user.length<1){
+            else if(user1.length<1){
                 res.json({error:"not found.."});
             }
             else{
@@ -77,6 +69,44 @@ class userController{
         .catch(err=>{
             res.json({error:"Username or password is invalid .."});
         })
+    }
+
+    admin(req,res){
+        console.log('called...');
+        User.find()
+        .select("email firstname lastname")
+        .exec()
+        .then(user=>{
+            res.json({user:user});
+        })
+        .catch()
+    }
+    admin_save(req,res){
+        console.log('called');
+        User.findOneAndUpdate(req.params.id,{$set:{email:req.body.email,firstname:req.body.firstname,lastname:req.body.lastname}},{new:true})
+        .exec()
+        .then(user=>{res.json({user:user})})
+        .catch()
+    }
+    admin_delete(req,res){
+        console.log('called');
+        User.remove({_id:req.params.id})
+        .exec()
+        .then(user=>{
+            res.json({message:"User has been deleted.."});
+        })
+        .catch()
+    }
+    admin_search(req,res){
+        console.log('called..');
+        User.find({firstname:req.body.firstname})
+        .exec()
+        .then(user=>{
+            console.log(user);
+            res.json({user:user});
+
+        })
+        .catch()
     }
 }
 

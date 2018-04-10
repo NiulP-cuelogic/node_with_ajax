@@ -64,14 +64,10 @@
                     
                     $("#error_message_signup").text(response.message);
                     // console.log(response.message);
-                    // if(response.admin){
-                    //     // localStorage.setItem('useremail',user_email);
-                    //     // console.log(localStorage.getItem('useremail'));
-                    //     // window.location = "admin_index.html";
-                    // }
                     if(response.user){
-                        localStorage.setItem('useremail',user_email);
+                        localStorage.setItem('user_email',user_email);
                         window.location = "profile.html";
+                       
                     }
                 }
             })

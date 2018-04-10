@@ -48,8 +48,8 @@
                     $(document).ready(function(){
                         $("#cancel_button").hide();
                         $('#save_button').hide();
-                        var username = localStorage.getItem('useremail');
-                        console.log(username);
+                        var username = localStorage.getItem('user_email');
+                        // console.log(username);
                         $.ajax({
                             method:"POST",
                             url:"http://localhost:3001/signup/userDetails",
