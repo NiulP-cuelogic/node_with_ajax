@@ -90,7 +90,7 @@
                 lastname:lastname
             },
             success:function(response){
-                
+                console.log(response.user);
             }
         })
         $(".row_"+id).attr("contenteditable",false);
@@ -102,7 +102,7 @@
         id = ObjectId.split("_")[1];
         // console.log(id);
         var email = $("#e_"+id).text();
-        var firstname = $("#f_"+id).text();
+        var firstname = $("#f_"+id).text(); 
         var lastname = $("#l_"+id).text();
         $.ajax({
             url:"http://localhost:3001/signup/signin/admin/delete/"+id,

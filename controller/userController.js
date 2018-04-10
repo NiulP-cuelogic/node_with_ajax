@@ -27,9 +27,9 @@ class userController{
     }
 
     userDetails(req,res){
-        // var username = req.body.email;
+        
         User.findOne({email:req.body.email}).exec().then(user=>{res.json({data:user})}).catch();
-        // console.log("username ==>",username);
+        
     }
 
     edit(req,res){
@@ -83,7 +83,7 @@ class userController{
     }
     admin_save(req,res){
         console.log('called');
-        User.findOneAndUpdate(req.params.id,{$set:{email:req.body.email,firstname:req.body.firstname,lastname:req.body.lastname}},{new:true})
+        User.findByIdAndUpdate(req.params.id,{$set:{email:req.body.email,firstname:req.body.firstname,lastname:req.body.lastname}},{new:true})
         .exec()
         .then(user=>{res.json({user:user})})
         .catch()
