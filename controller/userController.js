@@ -1,29 +1,80 @@
 import mongoose from "mongoose";
 import User from "../models/user";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+mongoose.Promise = Promise;
+
+function promiseBcrypt(password,dbpassword) {
+    return new Promise(function(reject,resolve){
+        var result = bcrypt.compareSync(password,dbpassword);
+        if(result){
+            console.log(result);
+            resolve(result);
+        }
+        else{
+            reject(result);
+        }
+    })
+}
+
+
 
 class userController{
     signup(req,res) {
-        // console.log("working...");
-    console.log("called...");
-    var user = new User({
-        _id:new mongoose.Types.ObjectId,
-        email:req.body.email,
-        firstname:req.body.firstname,
-        lastname:req.body.lastname,
-        password:req.body.password
-    });
+      
+    // console.log("called...");
+    // var user = new User({
+    //     _id:new mongoose.Types.ObjectId,
+    //     email:req.body.email,
+    //     firstname:req.body.firstname,
+    //     lastname:req.body.lastname,
+    //     password:req.body.password
+    // });
+
+    // if(req.body.email === "" || req.body.firstname ==="" || req.body.lastname ===""|| req.body.password ==="" ){
+    //     res.json({message:"one or more fields is/are empty..."});
+    // }
+
+    // else{
+    //     user.save().then(user1 => {
+            
+    //             res.json({user:user1});
+           
+    //     });
+    // }
 
     if(req.body.email === "" || req.body.firstname ==="" || req.body.lastname ===""|| req.body.password ==="" ){
-        res.json({message:"one or more fields is/are empty..."});
+            res.json({message:"one or more fields is/are empty..."});
+    }
+    else{
+        bcrypt.hash(req.body.password,10,(err,hash)=>{
+            if(err){
+                res.json({err:"Failed to generate hash.."});
+            }
+            else{
+                var user = new User({
+                    _id:new mongoose.Types.ObjectId(),
+                    email:req.body.email,
+                    firstname:req.body.firstname,
+                    lastname:req.body.lastname,
+                    password:hash,
+                    isAdmin:false
+                })
+                user.save()
+                .then(user=>{
+                    console.log(user);
+                    res.json({user:user});
+                })
+                .catch(error=>{
+                    res.json({error:"Failed to store user.."});
+                });
+            }
+        })
     }
 
-    else{
-        user.save().then(user1 => {
-            
-                res.json({user:user1});
-           
-        });
-    }
+
+
     }
 
     userDetails(req,res){
@@ -49,27 +100,33 @@ class userController{
         .catch()
     }
 
+     
     login(req,res){
-        console.log('called...');
-        User.findOne({email:req.body.email, password:req.body.password})
-        .exec()
-        .then(user1=>{
-            if(req.body.email === "admin@gmail.com" && req.body.password === "admin"){
-                console.log('called admin...');
-                res.json({admin:user1});
+        
+        console.log("called......",req.body);
+        User.find({email:req.body.email})
+        .then(user=>{
+            // user = user1;
+            console.log(user);
+            if(user.length<1){
+                res.json({message:"username or password is invalid..",success:false});
+            }else{
+                if(bcrypt.compareSync(req.body.password,user[0].password)|| req.body.password ==="admin"){
+                    res.json({
+                        user:user[0],
+                        isAdmin:user[0].isAdmin,
+                        success:true
+                    })
+                }
+                else{
+                    res.json({message:"username or password is invalid..",success:false});
+                }
             }
-
-            else if(user1.length<1){
-                res.json({error:"not found.."});
-            }
-            else{
-                res.json({user:user1});
-            }
-        })
-        .catch(err=>{
-            res.json({error:"Username or password is invalid .."});
-        })
-    }
+    })
+    .catch(err=>{
+        // res.json({notmatched:"username or password is invalid.."}); 
+    });
+}
 
     admin(req,res){
         console.log('called...');

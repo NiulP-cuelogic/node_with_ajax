@@ -9,6 +9,9 @@
     "start": "nodemon --exec npm run babel-node -- ./app.js",
     "build": "babel src -d dist"
   },
+  "presets": [
+    "latest"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NiulP-cuelogic/node_with_ajax.git"
@@ -21,12 +24,14 @@
   "homepage": "https://github.com/NiulP-cuelogic/node_with_ajax#readme",
   "dependencies": {
     "babel": {
-  "presets": [
-    "latest"
-  ]
-},	
+      "presets": [
+        "latest"
+      ]
+    },
+    "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
+    "ji": "0.0.0",
     "joi": "^13.1.2",
     "jsonwebtoken": "^8.2.1",
     "mongodb": "^3.0.5",
@@ -37,6 +42,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
     "http-server": "^0.11.1"
   }
 }

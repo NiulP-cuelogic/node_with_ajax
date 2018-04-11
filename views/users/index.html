@@ -33,7 +33,7 @@
                 <!-- <button type="submit">Login</button> -->
                 <input type="submit" value="Login" id="login_btn" onclick="login(event)">
                 <p class="message">Not a user?<a href="#">Sign-up</a></p>
-                <p class="error_message_login"></p>
+                <p id="error_message_login"></p>
                 
             </form>
         </div>
@@ -50,7 +50,7 @@
             var user_firstname = $("#user_firstname").val();
             var user_lastname = $("#user_lastname").val();
             var user_password = $("#user_password").val();
-
+            console.log("kfdsods");
             $.ajax({
                 url:"http://localhost:3001/signup",
                 method:"post",
@@ -66,7 +66,8 @@
                     // console.log(response.message);
                     if(response.user){
                         localStorage.setItem('user_email',user_email);
-                        window.location = "profile.html";
+                        // window.location = "profile.html";
+                        $("#error_message_signup").text("You have successfully created an account.. Please login .");
                        
                     }
                 }
@@ -74,7 +75,7 @@
         }
         function login(event){
             event.preventDefault();
-            console.log('called');
+            // console.log('called');
             var user_email_login = $("#login_email").val();
             var user_password_login = $('#login_password').val();
             // console.log(user_email);
@@ -87,17 +88,19 @@
                     password:user_password_login
                 },
                 success:function(response){
-                    // console.log(response);
-                    if(response.admin){
-                        console.log("admin...");
-                        window.location = "../admin/admin_index.html";
+                    console.log(response);
+                   
+                    if(response.success){
+                        if(response.isAdmin===true){
+                            window.location = "../admin/admin_index.html";
+                        }
+                        else{
+                            window.location = "profile.html";
+                        }
                     }
-                    if(response.user){
-                        window.location = "profile.html";
+                    else{
+                        $("#error_message_login").text(response.message);
                     }
-                    if(response.error){
-                        $('.error_message_login').text("username or password is invalid .");
-                    }   
                 }
             })
         }
