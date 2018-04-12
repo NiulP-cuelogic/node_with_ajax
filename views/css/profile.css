@@ -7,13 +7,13 @@ body {
     margin-top: 110px;
 }
 
-.users {
+.users ,.usersAct{
     border-collapse: collapse;
     width: 80%;
     margin: 0 auto;
 }
 
-.users td,
+.users td,.usersAct td,usersAct th
 .users th {
     /* width: 100%; */
     border: 1p solid #ddd;
@@ -21,15 +21,19 @@ body {
     text-align: center;
 }
 
-.users tr {
+.users tr ,.usersAct tr{
     background-color: rgba(255, 255, 255, 0.8);
 }
 
-.users tr:hover {
+#back-btn{
+    
+}
+
+.users tr, .usersAct tr:hover {
     background-color: #ddd;
 }
 
-.users th {
+.users th , .usersAct th{
     padding-top: 12px;
     /* padding-bottom: 12px; */
     /* text-align: left; */

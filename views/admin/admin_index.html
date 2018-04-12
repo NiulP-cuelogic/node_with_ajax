@@ -9,6 +9,9 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="logout-btn">
+        <button onclick="logout(event)">Logout</button>
+    </div>
     <div class="container">
         <table class="users">
             <thead>
@@ -23,23 +26,30 @@
             
         </table>
     </div>
-    <table>
-        
-    </table>
+    
     <div>
-        <input type="text" placeholder="search by name" id="user_firstname">
+        <input type="text" placeholder="search by name" id="user_firstname" name="firstname">
         <button id="search_button" onclick="search(event)">SEARCH</button>
+        <span class="error_message_search"></span>
     </div>
+    <div>
+        <button id="activity_button" onclick="getActivity(event)">Get login activity</button>
+    </div>
+
     <script>
     
+    
+    var token = localStorage.getItem('authToken');
     $(document).ready(function(){       
-
+        
         $.ajax({
         url:"http://localhost:3001/signup/signin/admin",
-        method:"GET",
+        method:"post",
+        data:{
+            token:token
+        },
         success:function(response){
             console.log(response.user);
-            // console.log(response.user.email);
             var thead = $('thead');
             var row;
             response.user.forEach(function(user){
@@ -87,7 +97,8 @@
                 _id:id,
                 email:email,
                 firstname:firstname,
-                lastname:lastname
+                lastname:lastname,
+                token:token
             },
             success:function(response){
                 console.log(response.user);
@@ -111,7 +122,8 @@
                 _id:id,
                 email:email,
                 firstname:firstname,
-                lastname:lastname
+                lastname:lastname,
+                token:token
             },
             success:function(response){
                 $(".row_"+id).remove();
@@ -124,19 +136,44 @@
         // console.log('called..');
         // var firstname = $('#user_firstname').val();
         var firstname = $("#user_firstname").val();
-        console.log(firstname);
+        // console.log(firstname);
         $.ajax({
             url:"http://localhost:3001/signup/signin/admin/search",
             method:"post",
             data:{
-                firstname:firstname
+                firstname:firstname,
+                token:token
             },
             success:function(response){
-                console.log(response.user);
+                
+                if(response.success){
+                    console.log(response.user._id);
+                    console.log(response.user);
+                    for(var i=0;i<response.user.length;i++){
+                        console.log(response.user[i]["_id"]);
+                        
+                        $('.row_'+response.user[i]["_id"]).css("background-color",'#AAAAAA');
+                       
+                    }
+                }
+                else{
+                    console.log("some error")
+                }
             }
         })
-    }   
+    }       
+    function logout(event){
+        event.preventDefault();
+        localStorage.removeItem('authToken');
+        window.location = "../users/index.html";
+    }
 
+    
+
+    function getActivity(event){
+        event.preventDefault();
+        window.location = "activity.html";
+    }
    
     
 

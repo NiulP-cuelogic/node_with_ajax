@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+        
+
+        <div class="container">
+                <div id="back-btn">
+                        <button onclick="window.location='admin_index.html'">BACK</button>
+                    </div>
+                <table class="users">
+                    <thead>
+                        <tr>
+                            <th>User email</th>
+                            <th>Login details</th>
+                        </tr>
+                    </thead>
+                </table>  
+                    
+                
+        </div>
+        
+
+
+
+    <script>
+    $(document).ready(function(){
+        var token = localStorage.getItem('authToken');
+        $.ajax({
+            url:"http:localhost:3001/signup/signin/admin/getActivity",
+            method:"post",
+            data:{
+                token:token
+            },
+            success:function(response){
+            var thead = $('thead');
+            var row;
+            response.allusers.forEach(function(user){
+                row += "<tr class = 'row_"+user._id+"'><td id='e_"+user._id+"'>"+user.user_email+"</td><td id='f_"+user._id+"'>"+user.loginDate+"</td></tr>";
+            },this);
+            // console.log(row);
+            thead.append(row);
+            }
+        
+        })
+    })    
+    
+    </script>
+</body>
+</html>

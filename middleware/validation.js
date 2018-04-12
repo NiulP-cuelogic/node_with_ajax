@@ -14,7 +14,7 @@ class Validation{
     validate(req,res,next){
         joi.validate(req.body,bodySchema,(err,result)=>{
             if(err){
-                res.json({err:"validation failed.."})
+                res.json({message:"username or password is invalid..",success:false})
             }
             else{
                 console.log("validation done...");

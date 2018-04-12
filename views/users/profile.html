@@ -11,7 +11,9 @@
 </head>
 <body>
        
-
+    <div class="logout-btn">
+        <button onclick="logout(event)">Logout</button>
+    </div>
         <div class ="container">
                 <table class="users">
                     <tr>
@@ -49,12 +51,14 @@
                         $("#cancel_button").hide();
                         $('#save_button').hide();
                         var username = localStorage.getItem('user_email');
+                        var token = localStorage.getItem('authToken');
                         // console.log(username);
                         $.ajax({
                             method:"POST",
                             url:"http://localhost:3001/signup/userDetails",
                             data:{
-                                email:username
+                                email:username,
+                                token:token
                             },
                             success:function(response){
                                 $('#userId').val(response.data._id);
@@ -64,6 +68,13 @@
                             }
                         })
                     })
+
+                    function logout(event){
+                        event.preventDefault();
+                        localStorage.removeItem('authToken');
+                        window.location = "index.html";
+                    }
+
                     $("#edit_button").on('click',function(){                  
                         showSaveAndCancel();
                     })
@@ -71,7 +82,7 @@
                     $("#save_button").on('click',function(){
                         saveDetails();
                     })
-                    
+
                 
                 </script>
    
