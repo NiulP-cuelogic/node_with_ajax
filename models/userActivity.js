@@ -7,7 +7,7 @@ var userActivitySchema = new Schema({
 
     user_email:{type:String},
     userId:{type:mongoose.Schema.Types.ObjectId, ref:"User"},
-    loginDate:{type:Date , default:Date.now}
+    loginDate:{type:Date}
 
 });
 

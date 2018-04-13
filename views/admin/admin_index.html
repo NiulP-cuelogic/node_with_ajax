@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/admin_index.css">
     <title>Document</title>
 </head>
+
 <body>
-    <div class="logout-btn">
-        <button onclick="logout(event)">Logout</button>
-    </div>
+    <header>
+        <div class="top-nav">
+            <ul class="top-nav-ul">
+                <li>
+                    <button id="activity_button" onclick="getActivity(event)">Get login activity</button>
+                </li>
+                <li>
+                    <input type="text" placeholder="search by name" id="user_firstname" name="firstname">
+                    <button id="search_button" onclick="search(event)">SEARCH</button>
+                    <span class="error_message_search"></span>
+                </li>
+                <li class="logout-btn">
+                    <button onclick="logout(event)">Logout</button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
     <div class="container">
         <table class="users">
-            <thead>
+            <thead class="demo">
                 <tr>
                     <th>User email</th>
                     <th>User firstname</th>
@@ -22,162 +39,195 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            
-            
+
+
         </table>
+        <button id="back-btn">Back</button>
     </div>
-    
-    <div>
-        <input type="text" placeholder="search by name" id="user_firstname" name="firstname">
-        <button id="search_button" onclick="search(event)">SEARCH</button>
-        <span class="error_message_search"></span>
-    </div>
-    <div>
-        <button id="activity_button" onclick="getActivity(event)">Get login activity</button>
-    </div>
+
+
+
 
     <script>
-    
-    
-    var token = localStorage.getItem('authToken');
-    $(document).ready(function(){       
-        
-        $.ajax({
-        url:"http://localhost:3001/signup/signin/admin",
-        method:"post",
-        data:{
-            token:token
-        },
-        success:function(response){
-            console.log(response.user);
-            var thead = $('thead');
-            var row;
-            response.user.forEach(function(user){
-                row += "<tr class = 'row_"+user._id+"'><td id='e_"+user._id+"'>"+user.email+"</td><td id='f_"+user._id+"'>"+user.firstname+"</td><td id='l_"+user._id+"'>"+user.lastname+"</td><td><button id='edit_"+user._id+"' onclick='edit(event)'>EDIT</button><button id='delete_"+user._id+"' onclick='user_delete(event)'>DELETE</button><span><button id='save_"+user._id+"' onclick='save(event)' style='display:none'>SAVE</button></span></td></tr>";
-            },this);
-            // console.log(row);
-            thead.append(row);
-            
-        }   
-    })
-})
-    function edit(event){
-        event.preventDefault();
-        var ObjectId = event.target.id;
-        var id  = ObjectId.split("_")[1];
-        $("#edit_"+id).hide();
-        $("#delete_"+id).hide();
-        $("#save_"+id).show();
-        
-        console.log(id);
-        $('.row_'+id).attr('contenteditable',true);
-           
-           
-        
-    }
-    function save(event){
-        event.preventDefault();
-        var ObjectId = event.target.id;
-      
-        var id  = ObjectId.split("_")[1];
-        console.log(id);
-        $("#save_"+id).hide();
-        $("#edit_"+id).show();
-        $("#delete_"+id).show();
+        var token = localStorage.getItem('authToken');
+        $(document).ready(function () {
+            $('#back-btn').hide();
+            $.ajax({
+                url: "http://localhost:3001/signup/signin/admin",
+                method: "post",
+                data: {
+                    token: token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        console.log(response.user);
+                        var thead = $('thead');
+                        var row;
+                        response.user.forEach(function (user) {
+                            row += "<tr class = 'row_" + user._id + "'><td id='e_" + user._id +
+                                "'>" + user.email + "</td><td id='f_" + user._id + "'>" +
+                                user.firstname + "</td><td id='l_" + user._id + "'>" + user
+                                .lastname + "</td><td><button id='edit_" + user._id +
+                                "' onclick='edit(event)'>EDIT</button><button id='delete_" +
+                                user._id +
+                                "' onclick='user_delete(event)'>DELETE</button><span><button id='save_" +
+                                user._id +
+                                "' onclick='save(event)' style='display:none'>SAVE</button></span></td></tr>";
+                        }, this);
+                        // console.log(row);
+                        thead.append(row);
+                    } else {
+                        window.alert("Please sign in ");
+                        window.location = "../users/index.html";
+                    }
 
-        var email = $("#e_"+id).text();
-        var firstname = $('#f_'+id).text();
-        // console.log(firstname);
-        var lastname = $("#l_"+id).text();
-        // console.log(lastname);
-        $.ajax({
-            url:"http://localhost:3001/signup/signin/admin/save/"+id,
-            method:"post",
-            data:{
-                _id:id,
-                email:email,
-                firstname:firstname,
-                lastname:lastname,
-                token:token
-            },
-            success:function(response){
-                console.log(response.user);
-            }
-        })
-        $(".row_"+id).attr("contenteditable",false);
-    }
 
-    function user_delete(event){
-        event.preventDefault();
-        var ObjectId = event.target.id;
-        id = ObjectId.split("_")[1];
-        // console.log(id);
-        var email = $("#e_"+id).text();
-        var firstname = $("#f_"+id).text(); 
-        var lastname = $("#l_"+id).text();
-        $.ajax({
-            url:"http://localhost:3001/signup/signin/admin/delete/"+id,
-            method:"post",
-            data:{
-                _id:id,
-                email:email,
-                firstname:firstname,
-                lastname:lastname,
-                token:token
-            },
-            success:function(response){
-                $(".row_"+id).remove();
-            }
+                }
+            })
         })
-    }
-    
-    function search(event){
-        event.preventDefault();
-        // console.log('called..');
-        // var firstname = $('#user_firstname').val();
-        var firstname = $("#user_firstname").val();
-        // console.log(firstname);
-        $.ajax({
-            url:"http://localhost:3001/signup/signin/admin/search",
-            method:"post",
-            data:{
-                firstname:firstname,
-                token:token
-            },
-            success:function(response){
-                
-                if(response.success){
-                    console.log(response.user._id);
+
+        function edit(event) {
+            event.preventDefault();
+            var ObjectId = event.target.id;
+            var id = ObjectId.split("_")[1];
+            $("#edit_" + id).hide();
+            $("#delete_" + id).hide();
+            $("#save_" + id).show();
+
+            console.log(id);
+            $('.row_' + id).attr('contenteditable', true);
+
+
+
+        }
+
+        function save(event) {
+            event.preventDefault();
+            var ObjectId = event.target.id;
+
+            var id = ObjectId.split("_")[1];
+            console.log(id);
+            $("#save_" + id).hide();
+            $("#edit_" + id).show();
+            $("#delete_" + id).show();
+
+            var email = $("#e_" + id).text();
+            var firstname = $('#f_' + id).text();
+            // console.log(firstname);
+            var lastname = $("#l_" + id).text();
+            // console.log(lastname);
+            $.ajax({
+                url: "http://localhost:3001/signup/signin/admin/save/" + id,
+                method: "post",
+                data: {
+                    _id: id,
+                    email: email,
+                    firstname: firstname,
+                    lastname: lastname,
+                    token: token
+                },
+                success: function (response) {
                     console.log(response.user);
-                    for(var i=0;i<response.user.length;i++){
-                        console.log(response.user[i]["_id"]);
-                        
-                        $('.row_'+response.user[i]["_id"]).css("background-color",'#AAAAAA');
-                       
+                }
+            })
+            $(".row_" + id).attr("contenteditable", false);
+        }
+
+        function user_delete(event) {
+            event.preventDefault();
+            var ObjectId = event.target.id;
+            id = ObjectId.split("_")[1];
+            // console.log(id);
+            var email = $("#e_" + id).text();
+            var firstname = $("#f_" + id).text();
+            var lastname = $("#l_" + id).text();
+            $.ajax({
+                url: "http://localhost:3001/signup/signin/admin/delete/" + id,
+                method: "post",
+                data: {
+                    _id: id,
+                    email: email,
+                    firstname: firstname,
+                    lastname: lastname,
+                    token: token
+                },
+                success: function (response) {
+                    $(".row_" + id).remove();
+                }
+            })
+        }
+
+        function done(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://localhost:3001/signup/signin/admin/done",
+                method: "post",
+                data: {
+                    token: token
+                },
+                success: function (response) {
+
+                }
+            })
+        }
+
+        function search(event) {
+            event.preventDefault();
+            // console.log('called..');
+            // var firstname = $('#user_firstname').val();
+            var firstname = $("#user_firstname").val();
+            // console.log(firstname);
+            $.ajax({
+                url: "http://localhost:3001/signup/signin/admin/search",
+                method: "post",
+                data: {
+                    firstname: firstname,
+                    token: token
+                },
+                success: function (response) {
+
+                    if (response.success) {
+                        $('#back-btn').show();
+                        $('.demo').empty();
+                        $('#back-btn').on('click', function () {
+                            window.location = 'admin_index.html';
+                        })
+
+                        var thead = $('thead');
+                        var row;
+                        response.user.forEach(function (user) {
+                            row += "<tr class = 'row_" + user._id + "'><td id='e_" + user._id +
+                                "'>" + user.email + "</td><td id='f_" + user._id + "'>" + user.firstname +
+                                "</td><td id='l_" + user._id + "'>" + user.lastname +
+                                "</td><td><button id='edit_" + user._id +
+                                "' onclick='edit(event)'>EDIT</button><button id='delete_" + user._id +
+                                "' onclick='user_delete(event)'>DELETE</button><span><button id='save_" +
+                                user._id +
+                                "' onclick='save(event)' style='display:none'>SAVE</button></span></td></tr>";
+                        }, this);
+
+                        thead.append(row);
+
+                    } else {
+                        console.log("some error")
                     }
                 }
-                else{
-                    console.log("some error")
-                }
-            }
-        })
-    }       
-    function logout(event){
-        event.preventDefault();
-        localStorage.removeItem('authToken');
-        window.location = "../users/index.html";
-    }
+            })
+        }
 
-    
-
-    function getActivity(event){
-        event.preventDefault();
-        window.location = "activity.html";
-    }
-   
-    
+        function logout(event) {
+            event.preventDefault();
+            localStorage.removeItem('authToken');
+            window.location = "../users/index.html";
+        }
 
 
+
+        function getActivity(event) {
+            event.preventDefault();
+            window.location = "activity.html";
+        }
     </script>
 </body>
-</html> 
+
+</html>

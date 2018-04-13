@@ -5,7 +5,7 @@ function saveDetails(){
     var user_email = $('#user_email').text();
     var user_firstname = $('#user_firstname').text();
     var user_lastname = $('#user_lastname').text();
-
+    var token = localStorage.getItem('authToken');
 
     $.ajax({    
         method:"POST",
@@ -14,7 +14,8 @@ function saveDetails(){
             _id:user_id,    
             email:user_email,
             firstname:user_firstname,
-            lastname:user_lastname
+            lastname:user_lastname,
+            token:token
         },
         success:function(response){
             console.log("called..");

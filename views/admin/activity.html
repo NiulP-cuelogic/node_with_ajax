@@ -41,13 +41,16 @@
                 token:token
             },
             success:function(response){
-            var thead = $('thead');
-            var row;
-            response.allusers.forEach(function(user){
+                if(response.success){
+                    var thead = $('thead');
+                var row;
+                response.allusers.forEach(function(user){
                 row += "<tr class = 'row_"+user._id+"'><td id='e_"+user._id+"'>"+user.user_email+"</td><td id='f_"+user._id+"'>"+user.loginDate+"</td></tr>";
-            },this);
-            // console.log(row);
-            thead.append(row);
+                },this);
+              
+                thead.append(row);
+                }
+            
             }
         
         })

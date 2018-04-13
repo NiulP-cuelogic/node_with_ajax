@@ -5,7 +5,7 @@ const bodySchema = {
         email:joi.string().email(),
         firstname:joi.string(),
         lastname:joi.string(),
-        password:joi.string().alphanum().min(4).max(20),
+        password:joi.string().alphanum().min(3).max(20),
         userid:joi.string().alphanum().min(24)
 }
 

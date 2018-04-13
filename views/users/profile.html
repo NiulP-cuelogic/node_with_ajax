@@ -61,10 +61,17 @@
                                 token:token
                             },
                             success:function(response){
-                                $('#userId').val(response.data._id);
-                                $('#user_email').text(response.data.email);
-                                $('#user_firstname').text(response.data.firstname);
-                                $('#user_lastname').text(response.data.lastname);
+                                if(response.success){
+                                    $('#userId').val(response.data._id);
+                                    $('#user_email').text(response.data.email);
+                                    $('#user_firstname').text(response.data.firstname);
+                                    $('#user_lastname').text(response.data.lastname);
+                                }
+                                else{
+                                    window.alert("Please sign in ");
+                                    window.location = "index.html";
+                                }
+                               
                             }
                         })
                     })

@@ -50,7 +50,7 @@ class userController{
 
     userDetails(req,res){
         
-        User.findOne({email:req.body.email}).exec().then(user=>{res.json({data:user})}).catch();
+        User.findOne({email:req.body.email}).exec().then(user=>{res.json({data:user, success:true})}).catch();
         
     }
 
@@ -93,7 +93,7 @@ class userController{
                         success:true
                     })
                     var id = ObjectId(user[0]._id);
-                    var user_date = moment(new Date());
+                    var user_date = moment().format('MMMM Do YYYY, h:mm:ss a');
                     // console.log(id);
                     var userActivity = new UserActivity({
                         user_email:req.body.email,
@@ -120,7 +120,7 @@ class userController{
         .exec()
         .then(user=>{
             console.log(user);
-            res.json({user:user});
+            res.json({user:user,success:true});
         })
         .catch()
     }
@@ -174,7 +174,7 @@ class userController{
         .then(user=>{
             console.log(user);
             var diff=[];
-            var date_now = moment(new Date());
+            var date_now = moment();
             console.log("date=====>",date_now);
             var users = [];
             var lastLogin= [];
@@ -189,7 +189,8 @@ class userController{
                 }
             }
             res.json({
-                allusers:users
+                allusers:users,
+                success:true
             })
         })
         

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- <script src="../scripts/index.js"></script> -->
+    <script src="../scripts/index.js"></script>
     <!-- <script src="jquery.js"></script> -->
 </head>
 <body>
@@ -16,10 +16,14 @@
     <div class="login-page">
         <div class="form">
             <form class="register-form" method="post">
-                <input type="email" placeholder="email" name="email"  id="user_email">
-                <input type="text" placeholder="first name" name="firstname"  id="user_firstname">
-                <input type="text" placeholder="last name" name="lastname"  id="user_lastname">
-                <input type="password" placeholder="password" name="password"  id="user_password">
+               
+                <input type="email" placeholder="email" name="email"  id="user_email" onfocusout = "email_validation(this)">
+               
+                <input type="text" placeholder="first name" name="firstname"  id="user_firstname" onfocusout="fname_validation(this)"> 
+                
+                <input type="text" placeholder="last name" name="lastname"  id="user_lastname" onfocusout="lname_validation(this)">
+                
+                <input type="password" placeholder="password" name="password"  id="user_password" onfocusout="p_validation(this)">
                 <!-- <input type="submit" value="Create"> -->
               
                 <input type="submit" value="Create" id="signup_btn" onclick="register(event)">
@@ -61,7 +65,7 @@
                 },
                 success:function(response){
                     
-                    $("#error_message_signup").text("One or more fields is/are invalid..");
+                    $("#error_message_signup").text("One or more fields is/are invalid.").css("color","red");
                     // console.log(response.message);
                     if(response.user){
                         localStorage.setItem('user_email',user_email);
@@ -101,7 +105,7 @@
                         }
                     }
                     else{
-                        $("#error_message_login").text("username or password is invalid..");
+                        $("#error_message_login").text("username or password is invalid.").css("color","red");
                     }
                 }
             })
